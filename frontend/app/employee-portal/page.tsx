@@ -3,48 +3,59 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { jwtDecode } from 'jwt-decode';
 import styles from './EmployeePortal.module.css';
 
-type User = {
+// Hardcoded search results for now
+const sampleResults: Employee[] = [
+  { id: '1', name: 'Alice Smith',   department: 'Engineering' },
+  { id: '2', name: 'Bob Jones',     department: 'Sales' },
+  { id: '3', name: 'Carol Lee',     department: 'HR' },
+  { id: '4', name: 'David Nguyen',  department: 'Marketing' },
+];
+
+type JWTPayload = {
   id:         string;
   username:   string;
   role:       string;
   department: string;
+  exp:        number;
 };
 
-const sampleResults = [
-  { id: '1', name: 'Alice Smith', department: 'Engineering' },
-  { id: '2', name: 'Bob Jones',   department: 'Sales' },
-  { id: '3', name: 'Carol Lee',   department: 'HR' },
-];
+type User = Omit<JWTPayload, 'exp'>;
+
+type Employee = {
+  id:         string;
+  name:       string;
+  department: string;
+};
 
 export default function EmployeePortal() {
-  const [user, setUser]       = useState<User|null>(null);
+  const [user, setUser]       = useState<User | null>(null);
   const [error, setError]     = useState<string>('');
-  const [results, setResults] = useState<typeof sampleResults>([]);
+  // Initialize results with hardcoded values
+  const [results, setResults] = useState<Employee[]>(sampleResults);
 
   useEffect(() => {
-    async function loadProfile() {
-      const token = localStorage.getItem('jwt');
-      if (!token) {
-        setError('Not authenticated');
-        return;
-      }
-      // Dummy user data for demo
-      setUser({
-        id:         '1',
-        username:   'test',
-        role:       'test',
-        department: 'test',
-      });
-      // Load sample results for layout
-      setResults(sampleResults);
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+      setError('Not authenticated');
+      return;
     }
-    loadProfile();
+    try {
+      const decoded = jwtDecode<JWTPayload>(token);
+      if (decoded.exp * 1000 < Date.now()) {
+        throw new Error('Token expired');
+      }
+      const { id, username, role, department } = decoded;
+      setUser({ id, username, role, department });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Invalid token');
+    }
   }, []);
 
   if (error) return <p className={styles.error}>{error}</p>;
-  if (!user)  return <p className={styles.loading}>Loading…</p>;
+  if (!user) return <p className={styles.loading}>Loading user…</p>;
 
   return (
     <div className={styles.employeePortalContainer}>
@@ -54,17 +65,21 @@ export default function EmployeePortal() {
         <p className={styles.info}><strong>Role:</strong> {user.role}</p>
         <p className={styles.info}><strong>Department:</strong> {user.department}</p>
 
-        <Link href={`/profile/edit/${user.id}`} className={styles.updateLink}>
-  Update Profile
-</Link>
+        <Link href={`http://localhost:3000/profile/${user.id}/edit`} className={styles.updateLink}>
+          Update Profile
+        </Link>
 
-        <SearchForm onSearch={q => setResults(
-          sampleResults.filter(r => r.name.toLowerCase().includes(q.toLowerCase()))
-        )} />
+        {/* SearchForm left for future integration */}
+        <SearchForm onSearch={q => {
+          // placeholder: filter hardcoded results
+          setResults(sampleResults.filter(r =>
+            r.name.toLowerCase().includes(q.toLowerCase())
+          ));
+        }} />
 
         <div className={styles.resultsContainer}>
           {results.length === 0
-            ? <p className={styles.noResults}>No results</p>
+            ? <p className={styles.noResults}>No results found</p>
             : results.map(emp => (
               <div key={emp.id} className={styles.resultItem}>
                 <div>

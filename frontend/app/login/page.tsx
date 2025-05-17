@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';    // Next.js 13 App Router
-import styles from './Login.module.css';
+import { useRouter }      from 'next/navigation';
+import styles             from './Login.module.css';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername]     = useState('');
-  const [password, setPassword]     = useState('');
+  const [username,    setUsername]    = useState('');
+  const [password,    setPassword]    = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/login', {
+      const res = await fetch('/api/login', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ username, password }),
@@ -26,16 +26,17 @@ export default function LoginPage() {
         throw new Error(errData.message || 'Login failed');
       }
 
-      const { token, redirectUrl } = await res.json();
+      // API now returns only { message, token }
+      const { token } = await res.json() as { token: string };
 
-      if (!token || !redirectUrl) {
-        throw new Error('Invalid response from server');
+      if (!token) {
+        throw new Error('No token returned from server');
       }
 
+      // store JWT and navigate client-side
       localStorage.setItem('jwt', token);
+      router.push('/employee-portal');
 
-      router.push(redirectUrl);
-      
     } catch (err: unknown) {
       console.error(err);
       setErrorMessage(
