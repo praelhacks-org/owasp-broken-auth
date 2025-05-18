@@ -5,6 +5,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
 const {
   getEmployee,
   updateEmployee,
+  searchEmployees,
 } = require('../controllers/employeeController');
 
 router.use(verifyToken);
@@ -14,5 +15,7 @@ router.get('/:id', getEmployee);
 
 // PUT /api/employees/:id
 router.put('/:id', updateEmployee);
+
+router.get('/', searchEmployees);
 
 module.exports = router;

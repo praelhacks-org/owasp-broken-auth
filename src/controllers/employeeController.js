@@ -68,3 +68,20 @@ exports.updateEmployee = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * GET /api/employees?search=<term>
+ */
+exports.searchEmployees = async (req, res, next) => {
+  try {
+    const term  = (req.query.search || '').toLowerCase();
+    const users = await loadUsers();
+
+    const matches = users.filter(u =>
+      u.username.toLowerCase().includes(term)
+    );
+    res.json(matches);
+  } catch (err) {
+    next(err);
+  }
+};
