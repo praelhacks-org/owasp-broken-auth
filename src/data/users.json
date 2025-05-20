@@ -1,16 +1,47 @@
 [
   {
     "id": 1,
-    "username": "user",
-    "password": "test1",
+    "username": "alice",
+    "password": "test2",
+    "fullName": "Alice Smiths",
+    "email": "alice.smiths@example.com",
+    "phone": "+1-555-123-4561",
     "role": "user",
-    "department": "HR"
+    "department": "HR",
+    "hireDate": "2021-07-15",
+    "location": "New York, NY",
+    "managerId": 3,
+    "lastLogin": "2025-05-20T14:32:00Z",
+    "status": "active"
   },
   {
     "id": 2,
-    "username": "user2",
+    "username": "bob",
     "password": "password2",
+    "fullName": "Bob Jones",
+    "email": "bob.jones@example.com",
+    "phone": "+1-555-987-6543",
     "role": "user",
-    "department": "Engineering"
+    "department": "Engineering",
+    "hireDate": "2020-01-03",
+    "location": "San Francisco, CA",
+    "managerId": 3,
+    "lastLogin": "2025-05-19T08:15:00Z",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "username": "carol",
+    "password": "adminPass!",
+    "fullName": "Carol Admin",
+    "email": "carol.admin@example.com",
+    "phone": "+1-555-222-3333",
+    "role": "admin",
+    "department": "Management",
+    "hireDate": "2019-11-01",
+    "location": "Boston, MA",
+    "managerId": null,
+    "lastLogin": "2025-05-20T09:00:00Z",
+    "status": "active"
   }
 ]

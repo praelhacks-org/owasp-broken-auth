@@ -1,0 +1,123 @@
+/* Container */
+.editContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f7f8fa, #e4e5e7);
+  box-sizing: border-box;
+}
+
+/* Card */
+.editCard {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Title */
+.editCard h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #333;
+  border-bottom: 1px solid #e3e3e3;
+  padding-bottom: 0.5rem;
+}
+
+/* Form */
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Label + Input blocks */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.field input,
+.field select {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Error message */
+.error {
+  background: #fdecea;
+  color: #b71c1c;
+  border: 1px solid #f5c2c7;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Button */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions button {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actions button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.actions button:disabled {
+  background-color: #a1c5f0;
+  cursor: not-allowed;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  font-size: 1rem;
+}
+
+.value {
+  padding: 0.75rem 1rem;
+  background: #f7f7f7;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  color: #222;
+}
